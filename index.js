@@ -2,8 +2,8 @@ var fs = require('fs');
 var qs = require('querystring');
 var request = require('request');
 var moment = require('moment');
-
-var apiKey = 'AIzaSyBCb49DliIl7VcLTnLbR8r7HavkamgRL3I'
+var Promise = require('bluebird');
+var keys = require('./config.js');
 
 var hrAddress ='944 Market Street #8, San Francisco, CA 94102';
 var twentyFour = '45 Montgomery Street, San Francisco, CA 94101';
@@ -13,14 +13,14 @@ var googleDirectionsEndPoint = 'https://maps.googleapis.com/maps/api/directions/
 var travelModes = {
   driving: 'driving',
   walking: 'walking',
-  bicycling 'bicycling',
+  bicycling: 'bicycling',
   transit: 'transit'
 };
 
 var googleDirectionsRequest = googleDirectionsEndPoint + '?' + qs.stringify({
     origin: hrAddress,
     destination: twentyFour,
-    key: apiKey,
+    key: keys.directionsApi,
     mode: 'walking',
     arrival_time: arrivalTime
   });
@@ -32,14 +32,13 @@ request(googleDirectionsRequest, function (error, response, body) {
   } else if (!error && response.statusCode == 200) {
 
     var routes = JSON.parse(body).routes[0];
-    // for (var key in body) {
-    //   console.log(body[key])
-    // }
-    routes.legs[0].steps.forEach(function(step) {
-      console.log('\n***********************************\n')
-      console.dir(step)
-    });
-    
+ 
+    console.log(routes.legs[0]);
+    // routes.legs[0].steps.forEach(function(step) {
+    //   console.log('\n***********************************\n')
+    //   console.log(step);
+    // });
+
     // console.log(routes)
 
 
